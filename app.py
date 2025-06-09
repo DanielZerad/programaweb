@@ -31,6 +31,8 @@ def importar_excel():
         flash('No file selected')
         return redirect(url_for('index'))
 
+    conn = None
+    cursor = None
     try:
         df = pd.read_excel(file)
         df.fillna(0, inplace=True)
@@ -55,8 +57,10 @@ def importar_excel():
     except Exception as e:
         flash(f"Error: {str(e)}")
     finally:
-        cursor.close()
-        conn.close()
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
     return redirect(url_for('index'))
 
@@ -78,7 +82,6 @@ def mostrar_datos():
 
 if __name__ == '__main__':
     from waitress import serve
-    serve(app, host='10.150.30.54', port=8000)
+    serve(app, host='10.150.24.13', port=8000)
 
 
-    
